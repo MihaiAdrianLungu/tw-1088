@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>Client</div>
+    <button onclick="getOrders()">Get orders</button>
+    <button onclick="getOrders(1)">Get order with id 1</button>
+    <button onclick="addOrder()">Create new order</button>
+    <button onclick="updateOrder(1)">Update order</button>
+    <button onclick="deleteOrder(2)">Delete order</button>
+
+    <script>
+        async function getMsg() {
+            const result = await fetch('http://localhost:3000/');
+            console.log(result);
+        }
+
+        // getMsg();
+
+        const api = 'http://localhost:3000';
+
+        async function getOrders(id=null) {
+            const result = await fetch(id ? `${api}/orders/${id}` : `${api}/orders/`);
+            const response = await result.json();
+
+            console.log(response);
+        }
+
+        async function addOrder() {
+            const newOrder = {
+                name: 'Andrei',
+                value: 4000,
+                status: 'pending'
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newOrder)
+            }
+
+            const result = await fetch(`${api}/orders`, requestOptions);
+            const response = await result.json();
+
+            console.log(response);
+        }
+
+        async function updateOrder(id) {
+            const toUpdate = {
+                status: 'delivered'
+            }
+
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },   
+                body: JSON.stringify(toUpdate)             
+            }
+
+            const result = await fetch(`${api}/orders/${id}`, requestOptions);
+            const response = await result.json();
+        }
+
+        async function deleteOrder(id=null) {
+            if (!id) return;
+
+            const requestOptions = {
+                method: 'DELETE'
+            }
+
+            const result = await fetch(`${api}/orders/${id}`, requestOptions);
+            const response = await result.json();
+
+            console.log(response);
+        }
+    </script>
+</body>
+</html>
