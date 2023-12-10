@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('')
-    const navigate = useNavigate();
 
     const fetchLogin = async () => {
         const options = {
@@ -21,7 +19,7 @@ function Login() {
 
         if(response.success) {
             localStorage.setItem('token', response.data.token);
-            navigate('/')
+            window.location.href = '/';
         }
     }
 
